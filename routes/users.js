@@ -4,5 +4,6 @@ var userController = require('controllers/user_controller')
 
 /* GET users listing. */
 router.get('/', userController.index);
+router.get('/:id', userController.show);
 
 module.exports = router;

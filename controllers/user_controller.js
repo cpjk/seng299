@@ -1,7 +1,14 @@
 var User = require('models/user')
 
 var index = function(req, res, next) {
-  res.send('respond with a resource');
+  User.find({}, function(err, users){
+    if (users == undefined){
+      res.render('404');
+    }
+    else{
+      res.render('users/index', { title: "Users", users: users});
+    }
+  });
 }
 
 var show = function(req, res, next) {

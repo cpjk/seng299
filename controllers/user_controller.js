@@ -5,11 +5,16 @@ var index = function(req, res, next) {
 }
 
 var show = function(req, res, next) {
-  var id = req.params.id;
+  var username = req.params.username;
 
-  var user = User.findOne({ id: id });
-
-  res.render('users/show', { title: "User page", id: id });
+  User.findOne({ username: username }, function(err, user) {
+    if (user == undefined){
+      res.render('404');
+    }
+    else{
+      res.render('users/show', { title: "User page", user: user});
+    }
+  });
 }
 
 var userController = {

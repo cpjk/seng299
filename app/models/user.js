@@ -1,4 +1,4 @@
-var mongoose = require('models/mongoose');
+var mongoose = require('app/models/mongoose');
 
 var userSchema = mongoose.Schema({
   username: String,

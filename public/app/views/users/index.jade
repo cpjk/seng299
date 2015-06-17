@@ -1,6 +1,3 @@
-extends ../layout
-
-block content
-  h1 Users
-  each user in users
-    div= user.username
+<div ng-repeat="user in userCtrl.users">
+  <li>{{user.username}}</li>
+</div>

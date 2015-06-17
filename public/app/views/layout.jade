@@ -16,8 +16,7 @@ html
     script(src="app/controllers/userCtrl.js")
     base(href="/")
 
-  body(ng-app="averageApp")
-    a(href="/users").
-      users
+  body(ng-app="averageApp" ng-controller="mainController as main")
+
     main
       div(ng-view)

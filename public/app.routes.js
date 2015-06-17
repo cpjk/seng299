@@ -1,6 +1,8 @@
 angular.module('app.routes', ['ngRoute'])
 .config(function($routeProvider, $locationProvider){
 
+  $locationProvider.html5Mode(true);
+
   $routeProvider
 
     .when('/users', {
@@ -8,6 +10,4 @@ angular.module('app.routes', ['ngRoute'])
       controller: 'userController',
       controllerAs: 'userCtrl'
     })
-
-  $locationProvider.html5Mode(true);
 });

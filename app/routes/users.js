@@ -6,10 +6,14 @@ var User = require('app/models/user')
 router.get('/', function(req, res, next) {
   User.find({}, function(err, users){
     if (users == undefined){
-      res.render('404');
+      res.json({
+        error: 'users undefined'
+      });
     }
     else{
-      res.render('users/index', { title: "Users", users: users});
+      res.json({
+        users: users
+      });
     }
   });
 });

@@ -1,6 +1,4 @@
 angular.module('mainCtrl', [])
-  .controller('mainController', function(){
+  .controller('mainController', function($http){
     var vm = this;
-
-    vm.meow = 'test';
   })

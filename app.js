@@ -5,11 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./app/routes/index');
-var users = require('./app/routes/users');
-var viewRoutes = require('./app/routes/viewRoutes');
-
 var app = express();
+
+var usersApiRoutes = require('./app/routes/api/users');
+var viewRoutes = require('./app/routes/viewRoutes');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'public/app/views'));
@@ -23,10 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// routes
 app.get('/', viewRoutes.index);
 app.get('/partials/users/:partial_name', viewRoutes.partials.users);
-app.use('/api', routes);
-app.use('/api/users', users);
+app.use('/api/users', usersApiRoutes);
 app.get('*', viewRoutes.index);
 
 // catch 404 and forward to error handler

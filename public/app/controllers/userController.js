@@ -1,5 +1,5 @@
-angular.module('userCtrl',[])
-.controller('userController', function($http) {
+angular.module('userControllers',[])
+.controller('userIndexController', function($http) {
     var vm = this;
 
     $http.get('/api/users')

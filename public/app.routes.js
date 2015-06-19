@@ -1,13 +1,17 @@
 angular.module('app.routes', ['ngRoute'])
 .config(function($routeProvider, $locationProvider){
 
+  $locationProvider.html5Mode(true);
+
   $routeProvider
 
     .when('/users', {
-      templateUrl: 'app/views/users/index.jade',
-      controller: 'userController',
+      templateUrl: 'partials/users/index.jade',
+      controller: 'userIndexController',
       controllerAs: 'userCtrl'
     })
 
-  $locationProvider.html5Mode(true);
+    .otherwise({
+      redirectTo: "/"
+    });
 });

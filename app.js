@@ -5,11 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./app/routes/index');
-var users = require('./app/routes/users');
-var catchAll = require('./app/routes/catchall');
-
 var app = express();
+
+var usersApiRoutes = require('./app/routes/api/users');
+var viewRoutes = require('./app/routes/viewRoutes');
+var indexRoute = require('./app/routes/indexRoute');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'public/app/views'));
@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', routes);
-app.use('/api/users', users);
-
-// forward all other routes to the angular app
-app.use('*', catchAll);
+// routes
+app.use('/', indexRoute);
+app.use('/partials', viewRoutes);
+app.use('/api/users', usersApiRoutes);
+app.use('*', indexRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,6 +59,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

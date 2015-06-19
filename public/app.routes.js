@@ -7,7 +7,7 @@ angular.module('app.routes', ['ngRoute'])
 
     .when('/users', {
       templateUrl: 'partials/users/index.jade',
-      controller: 'userController',
+      controller: 'userIndexController',
       controllerAs: 'userCtrl'
     })
 

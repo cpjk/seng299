@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', catchAll.index);
+app.get('/partials/users/:partial_name', catchAll.partials.users);
 app.use('/api', routes);
 app.use('/api/users', users);
-
-// forward all other routes to the angular app
-app.use('*', catchAll);
+app.get('*', catchAll.index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,6 +59,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

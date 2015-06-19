@@ -1,1 +1,1 @@
-angular.module('averageApp', ['mainCtrl', 'userCtrl', 'app.routes']);
+angular.module('averageApp', ['mainController', 'userCtrl', 'app.routes']);

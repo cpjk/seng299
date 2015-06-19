@@ -1,4 +1,4 @@
-angular.module('userCtrl',[])
+angular.module('userControllers',[])
 .controller('userIndexController', function($http) {
     var vm = this;
 

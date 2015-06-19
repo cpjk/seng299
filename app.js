@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./app/routes/index');
 var users = require('./app/routes/users');
-var catchAll = require('./app/routes/catchall');
+var viewRoutes = require('./app/routes/viewRoutes');
 
 var app = express();
 
@@ -23,11 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', catchAll.index);
-app.get('/partials/users/:partial_name', catchAll.partials.users);
+app.get('/', viewRoutes.index);
+app.get('/partials/users/:partial_name', viewRoutes.partials.users);
 app.use('/api', routes);
 app.use('/api/users', users);
-app.get('*', catchAll.index);
+app.get('*', viewRoutes.index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

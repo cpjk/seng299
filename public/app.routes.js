@@ -10,4 +10,8 @@ angular.module('app.routes', ['ngRoute'])
       controller: 'userController',
       controllerAs: 'userCtrl'
     })
+
+    .otherwise({
+      redirectTo: "/"
+    });
 });

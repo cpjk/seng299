@@ -1,11 +1,15 @@
 var path = require('path');
+var express = require('express');
+var router = express.Router();
 
-exports.partials = {};
+// exports.partials = {};
 
-exports.index = function(req, res) {
-  res.render('layout');
-};
+// router.get("/", function(req, res, next) {
+//   res.render('layout');
+// });
 
-exports.partials.users = function(req, res) {
+router.get("/users/:partial_name", function(req, res, next) {
   res.render('partials/users/' + req.params.partial_name);
-};
+});
+
+module.exports = router;

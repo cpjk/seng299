@@ -9,6 +9,7 @@ var app = express();
 
 var usersApiRoutes = require('./app/routes/api/users');
 var viewRoutes = require('./app/routes/viewRoutes');
+var indexRoute = require('./app/routes/indexRoute');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'public/app/views'));
@@ -23,10 +24,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
-app.get('/', viewRoutes.index);
-app.get('/partials/users/:partial_name', viewRoutes.partials.users);
+app.use('/', indexRoute);
+app.use('/partials', viewRoutes);
 app.use('/api/users', usersApiRoutes);
-app.get('*', viewRoutes.index);
+app.use('*', indexRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

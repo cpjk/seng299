@@ -10,5 +10,9 @@ angular.module('userService', [])
     return $http.get('/api/users/' + username);
   };
 
+  factory.create = function(user) {
+    return $http.post('/api/users/', user);
+  };
+
   return factory;
 });

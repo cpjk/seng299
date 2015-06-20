@@ -10,7 +10,11 @@ angular.module('app.routes', ['ngRoute'])
       controller: 'userIndexController',
       controllerAs: 'userCtrl'
     })
-
+    .when('/users/:username', {
+      templateUrl: 'partials/users/show.jade',
+      controller: 'userShowController',
+      controllerAs: 'userCtrl'
+    })
     .otherwise({
       redirectTo: "/"
     });

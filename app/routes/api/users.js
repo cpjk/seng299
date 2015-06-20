@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('app/models/user')
 
 // users index page
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next){
   User.find({}, function(err, users){
     if(err){
       res.send(err);
@@ -17,10 +17,10 @@ router.get('/', function(req, res, next) {
 });
 
 // user show page
-router.get('/:username', function(req, res, next) {
+router.get('/:username', function(req, res, next){
   var username = req.params.username;
 
-  User.findOne({ username: username }, function(err, user) {
+  User.findOne({username: username}, function(err, user){
     if(err){
       res.send(err);
     }

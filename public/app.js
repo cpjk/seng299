@@ -1,1 +1,5 @@
-angular.module('averageApp', ['mainController', 'userControllers', 'app.routes']);
+angular.module('averageApp', [
+    'mainController',
+    'userControllers',
+    'userService',
+    'app.routes']);

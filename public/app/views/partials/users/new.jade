@@ -1,0 +1,11 @@
+div.page-header.text-center
+  h1 Create a new user
+div.text-center
+  div
+    form(ng-submit="userCtrl.submit()")
+      input(type="text" required ng-model="userCtrl.user.username")
+      div
+        input(type="submit" value="Submit").btn.btn-default.submit-button
+
+  div(ng-model="userCtrl.success")
+    {{userCtrl.success}}

@@ -30,4 +30,24 @@ router.get('/:username', function(req, res, next){
   });
 });
 
+// create new user
+router.post('/', function(req, res, next){
+  var user = new User;
+  user.username = req.body.username;
+
+  user.save(function(err){
+    if(err){
+      if(err.code == 11000){
+        res.json({success: false, message: "That username is already taken :("});
+      }
+      else{
+        res.json({success: false, message: "There was an error with code" + err.code});
+      }
+    }
+    else{
+      res.json({success: true, message: "User successfully created!"});
+    }
+  });
+});
+
 module.exports = router;

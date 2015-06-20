@@ -18,3 +18,24 @@ userControllers.controller('userShowController', function($http, $routeParams, U
       vm.user = data.user;
     })
 });
+
+userControllers.controller('userNewController', function($http, User) {
+  var vm = this;
+  vm.success = "";
+
+  vm.user = {
+    username: ""
+  };
+
+  vm.submit = function(){
+    User.create(vm.user)
+    .then(function(data){
+      if(data.data.success){
+        vm.success = "success!";
+      }
+      else{
+        vm.success = data.data.message;
+      }
+    });
+  };
+});

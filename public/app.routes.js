@@ -5,22 +5,25 @@ angular.module('app.routes', ['ngRoute'])
 
   $routeProvider
 
-    .when('/users', {
-      templateUrl: 'partials/users/index.jade',
-      controller: 'userIndexController',
-      controllerAs: 'userCtrl'
-    })
-    .when('/users/:username', {
-      templateUrl: 'partials/users/show.jade',
-      controller: 'userShowController',
-      controllerAs: 'userCtrl'
-    })
-    .when('/new_user', {
-      templateUrl: 'partials/users/new.jade',
-      controller: 'userNewController',
-      controllerAs: 'userCtrl'
-    })
-    .otherwise({
-      redirectTo: "/"
-    });
+  .when('/users', {
+    templateUrl: 'partials/users/index.jade',
+    controller: 'userIndexController',
+    controllerAs: 'userCtrl'
+  })
+
+  .when('/users/:username', {
+    templateUrl: 'partials/users/show.jade',
+    controller: 'userShowController',
+    controllerAs: 'userCtrl'
+  })
+
+  .when('/new_user', {
+    templateUrl: 'partials/users/new.jade',
+    controller: 'userNewController',
+    controllerAs: 'userCtrl'
+  })
+
+  .otherwise({
+    redirectTo: "/"
+  });
 });

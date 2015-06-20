@@ -5,10 +5,8 @@ var User = require('app/models/user')
 // users index page
 router.get('/', function(req, res, next) {
   User.find({}, function(err, users){
-    if (users == undefined){
-      res.json({
-        error: 'users undefined'
-      });
+    if(err){
+      res.send(err);
     }
     else{
       res.json({
@@ -23,11 +21,11 @@ router.get('/:username', function(req, res, next) {
   var username = req.params.username;
 
   User.findOne({ username: username }, function(err, user) {
-    if (user == undefined){
-      res.render('404');
+    if(err){
+      res.send(err);
     }
     else{
-      res.render('users/show', { title: "User page", user: user});
+      res.json({user: user});
     }
   });
 });

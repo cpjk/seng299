@@ -23,6 +23,12 @@ angular.module('app.routes', ['ngRoute'])
     controllerAs: 'userCtrl'
   })
 
+  .when('/login', {
+    templateUrl: 'partials/session/login.jade',
+    controller: 'sessionLoginController',
+    controllerAs: 'sessionCtrl'
+  })
+
   .otherwise({
     redirectTo: "/"
   });

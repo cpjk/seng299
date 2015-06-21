@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('app/models/user')
+var passport = require('passport');
 
 // users index page
 router.get('/', function(req, res, next){
@@ -30,23 +31,17 @@ router.get('/:username', function(req, res, next){
   });
 });
 
-// create new user
+// create new user and authenticate with passport
 router.post('/', function(req, res, next){
-  var user = new User;
-  user.username = req.body.username;
+  User.register(new User({username: req.body.username}), req.body.password, function(err, user){
 
-  user.save(function(err){
     if(err){
-      if(err.code == 11000){
-        res.json({success: false, message: "That username is already taken :("});
-      }
-      else{
-        res.json({success: false, message: "There was an error with code" + err.code});
-      }
+      res.json(err);
     }
-    else{
-      res.json({success: true, message: "User successfully created!"});
-    }
+
+    passport.authenticate('local')(req, res, function(){
+      res.json({success: true});
+    });
   });
 });
 

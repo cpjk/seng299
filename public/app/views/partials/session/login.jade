@@ -2,14 +2,13 @@ div.page-header.text-center
   h3 Login
 
 div.text-center
-  div
-    form(ng-submit="sessionCtrl.login()")
-      div
-        input(type="text" required placeholder="Username" ng-model="sessionCtrl.username")
-      div
-        input(type="password" required placeholder="Password" ng-model="sessionCtrl.password")
-      div
-        input(type="submit" value="Submit").btn.btn-default.submit-button
+  form(ng-submit="sessionCtrl.login()").centred-form
+    div.form-group
+      input(type="text" required placeholder="Username" ng-model="sessionCtrl.username").form-control
+    div.form-group
+      input(type="password" required placeholder="Password" ng-model="sessionCtrl.password").form-control
+    button(type="submit").btn.btn-default.
+      Login
 
   div(ng-model="sessionCtrl.message")
     {{sessionCtrl.message}}

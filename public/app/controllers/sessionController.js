@@ -9,6 +9,7 @@ sessionControllers.controller('sessionLoginController', function($http, Session,
   vm.login = function() {
     Session.login({username: vm.username, password: vm.password})
     .success(function(data, status, headers, config){
+
       CurrentUser.user = data.currentUser;
       vm.currentUser = CurrentUser.user;
       vm.message = "Login successful!";
@@ -22,7 +23,6 @@ sessionControllers.controller('sessionLoginController', function($http, Session,
       }
     });
   };
-
 });
 
 sessionControllers.controller('sessionLogoutController', function($http, Session, CurrentUser) {

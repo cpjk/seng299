@@ -16,6 +16,8 @@ angular.module('sessionService', [])
 .factory('CurrentUser', function($http){
   var factory = {user: ''};
 
+  // updates self.user by hitting the /api/session endpoint to
+  // grab the current user
   factory.update = function(){
     $http.get('/api/session')
     .success(function(data, status, headers, config){

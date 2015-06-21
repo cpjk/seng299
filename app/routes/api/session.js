@@ -15,6 +15,7 @@ router.post('/logout', function(req, res){
   res.json({});
 });
 
+// Return the current user. Returns currentUser as undefined if no current user
 router.get("/", function(req, res){
   if(req.user){
     res.status(200).json({currentUser: req.user});

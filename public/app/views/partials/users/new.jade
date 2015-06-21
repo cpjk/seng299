@@ -4,7 +4,10 @@ div.page-header.text-center
 div.text-center
   div
     form(ng-submit="userCtrl.submit()")
-      input(type="text" required ng-model="userCtrl.user.username")
+      div
+        input(type="text" required placeholder="Username" ng-model="userCtrl.user.username")
+      div
+        input(type="password" required placeholder="Password" ng-model="userCtrl.user.password")
       div
         input(type="submit" value="Submit").btn.btn-default.submit-button
 

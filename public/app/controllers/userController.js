@@ -24,7 +24,8 @@ userControllers.controller('userNewController', function($http, User) {
   vm.success = "";
 
   vm.user = {
-    username: ""
+    username: "",
+    password: ""
   };
 
   vm.submit = function(){

@@ -6,4 +6,8 @@ router.get("/users/:partial_name", function(req, res, next) {
   res.render('partials/users/' + req.params.partial_name);
 });
 
+router.get("/session/:partial_name", function(req, res, next) {
+  res.render('partials/session/' + req.params.partial_name);
+});
+
 module.exports = router;

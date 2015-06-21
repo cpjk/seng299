@@ -7,6 +7,15 @@ a {
   color: #00B7FF;
 }
 
+.centred-form {
+  margin: 0 auto 0 auto;
+  max-width: 500px;
+}
+
 .submit-button {
   margin-top: 10px;
+}
+
+.form-input{
+  margin: 10px 0px 10px 0px;
 }

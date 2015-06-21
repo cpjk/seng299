@@ -23,25 +23,30 @@ html
     script(src="app/services/sessionService.js")
 
   body(ng-app="averageApp" ng-controller="mainController as main")
-    nav.navbar.navbar-default
-      .container-fluid
-        .navbar-header
-          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
-            span.sr-only Toggle navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.navbar-brand(href='/') Average Joe's
-        #bs-example-navbar-collapse-1.collapse.navbar-collapse
-          ul.nav.navbar-nav
-            li
-              a(href='/users') Users
-          ul.nav.navbar-nav
-            li
-              a(href='/new_user') New User
-          ul.nav.navbar-nav.navbar-right
-            li
-              a(href='/login') Login
+    div.container-fluid
+      nav.navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/') Average Joe's
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li
+                a(href='/users') Users
+            ul.nav.navbar-nav
+              li
+                a(href='/new_user') New User
+            ul.nav.navbar-nav.navbar-nav
+              li(ng-model="main.currentUser")
+                a(href="")
+                  {{ main.currentUser.username }}
+            ul.nav.navbar-nav.navbar-right
+              li
+                a(href='/login') Login
 
-    main
-      div(ng-view)
+      main
+        div(ng-view)

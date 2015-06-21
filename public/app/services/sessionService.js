@@ -6,6 +6,10 @@ angular.module('sessionService', [])
     return $http.post('/api/session/login', credentials);
   };
 
+  factory.logout = function(){
+    return $http.post('/api/session/logout');
+  };
+
   return factory;
 })
 

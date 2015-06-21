@@ -45,6 +45,9 @@ html
                 a(href="")
                   {{ main.currentUser.username }}
             ul.nav.navbar-nav.navbar-right
+              li(ng-controller="sessionLogoutController as sessionCtrl")
+                a(href='' ng-click="sessionCtrl.logout()") Logout
+            ul.nav.navbar-nav.navbar-right
               li
                 a(href='/login') Login
 

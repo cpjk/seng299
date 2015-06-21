@@ -22,4 +22,20 @@ sessionControllers.controller('sessionLoginController', function($http, Session,
       }
     });
   };
+
+});
+
+sessionControllers.controller('sessionLogoutController', function($http, Session, CurrentUser) {
+  vm = this;
+
+  vm.logout = function() {
+    Session.logout()
+    .success(function(data, status, headers, config){
+      CurrentUser.update();
+      vm.message = "Logged out successfully."
+    })
+    .error(function(data, status, headers, config){
+       vm.message = "There was an error, with HTTP response code " + status;
+    });
+  };
 });

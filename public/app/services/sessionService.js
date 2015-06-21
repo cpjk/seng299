@@ -33,5 +33,9 @@ angular.module('sessionService', [])
     return factory.user;
   };
 
+  factory.profileUrl = function(){
+    return "/users/" + factory.user.username;
+  };
+
   return factory;
 });

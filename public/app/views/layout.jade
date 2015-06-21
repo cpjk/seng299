@@ -40,16 +40,22 @@ html
             ul.nav.navbar-nav
               li
                 a(href='/new_user') New User
-            ul.nav.navbar-nav.navbar-nav
-              li(ng-model="main.currentUser")
-                a(href="")
+
+            ul.nav.navbar-nav.navbar-right
+
+              li(ng-if="main.currentUser").dropdown#fat-menu
+                a(href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button").dropdown-toggle#drop3.
                   {{ main.currentUser.username }}
-            ul.nav.navbar-nav.navbar-right
-              li(ng-controller="sessionLogoutController as sessionCtrl")
-                a(href='' ng-click="sessionCtrl.logout()") Logout
-            ul.nav.navbar-nav.navbar-right
-              li
-                a(href='/login') Login
+                ul(aria-labelledby="drop3").dropdown-menu
+                  li
+                    a(ng-href="{{main.currentUserUrl}}").
+                      Profile
+                  li(ng-controller="sessionLogoutController as sessionCtrl")
+                    a(href='' ng-click="sessionCtrl.logout()").
+                      Logout
+
+              li(ng-if="!main.currentUser")
+                  a(href='/login') Login
 
       main
         div(ng-view)

@@ -5,6 +5,12 @@ angular.module('app.routes', ['ngRoute'])
 
   $routeProvider
 
+  .when('/', {
+    templateUrl: 'partials/home/home.jade',
+    controller: 'homeController',
+    controllerAs: 'homeCtrl'
+  })
+
   .when('/users', {
     templateUrl: 'partials/users/index.jade',
     controller: 'userIndexController',
@@ -30,6 +36,6 @@ angular.module('app.routes', ['ngRoute'])
   })
 
   .otherwise({
-    redirectTo: "/"
+    redirectTo: '/'
   });
 });

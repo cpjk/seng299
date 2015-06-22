@@ -1,6 +1,6 @@
 var sessionControllers = angular.module('sessionControllers',[]);
 
-sessionControllers.controller('sessionLoginController', function($http, Session, CurrentUser) {
+sessionControllers.controller('sessionLoginController', function($http, $location, Session, CurrentUser) {
   var vm = this;
   vm.message = "";
   vm.username = "";
@@ -13,6 +13,7 @@ sessionControllers.controller('sessionLoginController', function($http, Session,
       CurrentUser.user = data.currentUser;
       vm.currentUser = CurrentUser.user;
       vm.message = "Login successful!";
+      $location.path("/");
     })
     .error(function(data, status, headers, config){
       if(status == 401){

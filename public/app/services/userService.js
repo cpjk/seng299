@@ -14,5 +14,9 @@ angular.module('userService', [])
     return $http.post('/api/users/', user);
   };
 
+  factory.delete = function(username) {
+    return $http.delete('/api/users/' + username);
+  };
+
   return factory;
 });

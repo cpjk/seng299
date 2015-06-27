@@ -1,2 +1,5 @@
 div
   {{userCtrl.user.username}}
+div(ng-controller="userDeleteController as userDeleteCtrl")
+  button(ng-click="userDeleteCtrl.delete(userCtrl.user)").btn.bt-default.
+    Delete

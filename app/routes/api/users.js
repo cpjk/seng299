@@ -46,4 +46,34 @@ router.post('/', function(req, res, next){
   });
 });
 
+router.delete('/:username', function(req, res, next){
+  var username = req.params.username;
+
+  // permissions checking can go here
+
+  User.findOne({username: username}, function(err, user){
+    if(err){
+      res.send(err);
+    }
+    else{
+      if(!user){
+        // the given user does not exist
+        res.status(404).send();
+      }
+      else{
+        if(req.user.username == user.username){
+          // The current user has been deleted. Log them out.
+          req.logout();
+          res.status(200);
+        }
+        else{
+          res.status(204);
+        }
+        user.remove(err);
+        res.send();
+      }
+    }
+  });
+});
+
 module.exports = router;

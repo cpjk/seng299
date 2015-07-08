@@ -3,14 +3,14 @@ div.text-center
     div
       {{userCtrl.user.username}}
     div
+      a(ng-href="{{userCtrl.userEditUrl}}" role="button").btn.btn-default.
+        Edit
+    div
       {{userCtrl.user.firstname}}
     div
       {{userCtrl.user.lastname}}
     div
       {{userCtrl.user.email}}
-    div
-      a(ng-href="{{userCtrl.userEditUrl}}" role="button").btn.btn-default.
-        Edit
 div(ng-controller="userDeleteController as userDeleteCtrl")
   button(ng-click="userDeleteCtrl.delete(userCtrl.user)").btn.btn-default.
     Delete

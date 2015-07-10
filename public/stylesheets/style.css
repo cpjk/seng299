@@ -23,3 +23,19 @@ a {
 .main-logo {
   width: 20%;
 }
+
+.form-control.badbgcolor {
+  background-color: #ff6666;
+}
+
+.form-control.goodbgcolor {
+  background-color: #66cc66;
+}
+
+.badcolor{
+  color: #ff6666;
+}
+
+.goodcolor{
+  color: #66cc66;
+}

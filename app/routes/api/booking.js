@@ -3,6 +3,7 @@ var router = express.Router();
 var Booking = require('../../../app/models/booking')
 var User = require('../../../app/models/user')
 var TimeSlot = require('../../../app/models/timeSlot')
+var Bookable = require('../../../app/models/bookable')
 var moment = require("moment");
 
 var MAX_BOOKING_HOURS = 2;
@@ -44,17 +45,25 @@ router.post('/', function(req, res, next){
       res.status(403).json({error: "Time limit exceeded."});
     }
     else{
-      var booking = new Booking({
-        date: date,
-        timeSlots: timeSlots
-      });
-
-      booking.save(function(err){
-        if(err) {
+      Bookable.findOne({ timeSlots: timeSlots[0] }, function(err, bookable){
+        if(err){
           res.send(err);
         }
         else{
-          res.status(200).json({success: "Success"});
+          var booking = new Booking({
+            date: date,
+            timeSlots: timeSlots,
+            bookable: bookable
+          });
+
+          booking.save(function(err){
+            if(err) {
+              res.send(err);
+            }
+            else{
+              res.status(200).json({success: "Success"});
+            }
+          });
         }
       });
     }

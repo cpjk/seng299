@@ -16,6 +16,24 @@ var timeLimitExceeded = function(timeSlots){
   return timeSlots[timeSlots.length-1].hourOfDay - timeSlots[0].hourOfDay > MAX_BOOKING_HOURS - 1;
 }
 
+// check if multiple bookables are being booked at once
+var multipleBookables = function(timeSlots){
+  var currentBookableId = null;
+  var multiple = false;
+
+  for(i = 0; i < timeSlots.length; i++){
+    var bookableId = timeSlots[i].bookable;
+    if(currentBookableId && currentBookableId.id != bookableId.id){
+      return true;
+    }
+    else{
+      currentBookableId = bookableId;
+    }
+  }
+
+  return false;
+}
+
 router.get('/', function(req, res, next){
   Booking.find({})
   .populate("timeSlots")
@@ -43,6 +61,9 @@ router.post('/', function(req, res, next){
 
     if (timeLimitExceeded(timeSlots)){
       res.status(403).json({error: "Time limit exceeded."});
+    }
+    else if (multipleBookables(timeSlots)){
+      res.status(403).json({error: "Cannot book multiple bookables in a single booking."});
     }
     else{
       Bookable.findOne({ timeSlots: timeSlots[0] }, function(err, bookable){

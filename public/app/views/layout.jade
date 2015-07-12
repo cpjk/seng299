@@ -42,7 +42,7 @@ html
             a.navbar-brand(href='/') Average Joe's
           #bs-example-navbar-collapse-1.collapse.navbar-collapse
             ul.nav.navbar-nav
-              li
+              li(ng-if="main.currentUser.permissions == 'admin'")
                 a(href='/users') Users
             ul.nav.navbar-nav
               li

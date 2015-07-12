@@ -16,6 +16,10 @@ var timeLimitExceeded = function(timeSlots){
   return timeSlots[timeSlots.length-1].hourOfDay - timeSlots[0].hourOfDay > MAX_BOOKING_HOURS - 1;
 }
 
+var inPast = function(date){
+  return date.diff(moment()) < 0;
+}
+
 // check if multiple bookables are being booked at once
 var multipleBookables = function(timeSlots){
   var currentBookableId = null;
@@ -64,6 +68,9 @@ router.post('/', function(req, res, next){
     }
     else if (multipleBookables(timeSlots)){
       res.status(403).json({error: "Cannot book multiple bookables in a single booking."});
+    }
+    else if (inPast(date)){
+      res.status(403).json({error: "Cannot create bookings in the past."});
     }
     else{
       Bookable.findOne({ timeSlots: timeSlots[0] }, function(err, bookable){

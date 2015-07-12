@@ -56,6 +56,7 @@ router.get('/', function(req, res, next){
 router.post('/', function(req, res, next){
   var timeSlots = req.body.timeSlots;
   var date = moment(req.body.date, "YYYY-M-D");
+  var currentUser = req.user;
 
   TimeSlot.find({
     '_id': {
@@ -71,6 +72,9 @@ router.post('/', function(req, res, next){
     }
     else if (inPast(date)){
       res.status(403).json({error: "Cannot create bookings in the past."});
+    }
+    else if(!currentUser){
+      res.status(403).json({error: "You must be logged in to create a booking."});
     }
     else{
       Bookable.findOne({ timeSlots: timeSlots[0] }, function(err, bookable){

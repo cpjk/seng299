@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
   lastname: String,
   key: String,
   confirmed: String,
-  permissions: String
+  permissions: String,
+  bookings: [{type: mongoose.Schema.Types.ObjectId, ref: 'Booking'}],
 });
 
 userSchema.plugin(passportLocalMongoose);

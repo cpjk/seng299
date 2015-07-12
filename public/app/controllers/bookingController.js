@@ -12,6 +12,13 @@ bookingControllers.controller('bookingNewController', function($http, Booking, B
   else{
     vm.date = moment().startOf("day");
   }
+  vm.nextDate = vm.date.clone();
+  vm.nextDate.add(1, 'days');
+  vm.nextDateUrl = "/facilities/" + vm.facilityName + "/" + vm.nextDate.format('YYYY-M-D');
+
+  vm.prevDate = vm.date.clone();
+  vm.prevDate.subtract(1, 'days');
+  vm.prevDateUrl = "/facilities/" + vm.facilityName + "/" + vm.prevDate.format('YYYY-M-D');
 
   vm.booking = {
     date: vm.date.format("YYYY-M-D"),

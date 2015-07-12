@@ -1,5 +1,12 @@
-div.page-header.text-center.
-  Bookables for {{bookingCtrl.facilityName}} for {{ bookingCtrl.date.format("dddd, MMMM Do YYYY") }}
+div.page-header.text-center
+  a(ng-href="{{bookingCtrl.prevDateUrl}}" role="button").btn.btn-default.marg-button-lr.
+    Previous day
+
+  span.
+    Bookables for {{bookingCtrl.facilityName}} for {{ bookingCtrl.date.format("dddd, MMMM Do YYYY") }}
+
+  a(ng-href="{{bookingCtrl.nextDateUrl}}" role="button").btn.btn-default.marg-button-lr.
+    Next day
 
 div.text-center
   form(ng-submit="bookingCtrl.submit()").centred-form

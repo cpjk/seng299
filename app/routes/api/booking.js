@@ -38,6 +38,19 @@ var multipleBookables = function(timeSlots){
   return false;
 }
 
+var userHasCurrentBookingsForFacility = function(user, date, bookable){
+  var bookings =  user.bookings;
+
+  for(i = 0; i < bookings.length; i++){
+    var booking = bookings[i];
+
+    if(moment(booking.date).isSame(date) && bookable._id.equals(booking.bookable)){
+      return true;
+    }
+  }
+  return false;
+}
+
 router.get('/', function(req, res, next){
   Booking.find({})
   .populate("timeSlots")
@@ -82,18 +95,40 @@ router.post('/', function(req, res, next){
           res.send(err);
         }
         else{
-          var booking = new Booking({
-            date: date,
-            timeSlots: timeSlots,
-            bookable: bookable
-          });
-
-          booking.save(function(err){
-            if(err) {
+          User.findOne({username: currentUser.username})
+          .populate('bookings')
+          .exec(function(err, user){
+            if(err){
               res.send(err);
             }
             else{
-              res.status(200).json({success: "Success"});
+              if(userHasCurrentBookingsForFacility(user, date, bookable)){
+                res.status(403).json({error: "You can only make one booking per facility per day."});
+              }
+              else{
+                var booking = new Booking({
+                  date: date,
+                  timeSlots: timeSlots,
+                  bookable: bookable
+                });
+
+                booking.save(function(err){
+                  if(err) {
+                    res.send(err);
+                  }
+                  else{
+                    user.bookings.push(booking);
+                    user.save(function(err){
+                      if(err){
+                        res.send(err);
+                      }
+                      else{
+                        res.status(200).json({success: "Success"});
+                      }
+                    });
+                  }
+                });
+              }
             }
           });
         }

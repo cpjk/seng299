@@ -37,18 +37,18 @@ router.post('/', function(req, res, next){
   if(req.body.password != req.body.password2){
     res.json(err);
   }
-  
-  User.register(new User({username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email}), req.body.password, function(err, user){
-
-    if(err){
-      res.json(err);
-    }
-    else{
-      passport.authenticate('local')(req, res, function(){
-        res.json({success: true});
-      });
-    }
-  });
+  else{
+    User.register(new User({username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email}), req.body.password, function(err, user){
+      if(err){
+        res.json(err);
+      }
+      else{
+        passport.authenticate('local')(req, res, function(){
+          res.json({success: true});
+        });
+      }
+    });
+  }
 });
 
 router.delete('/:username', function(req, res, next){

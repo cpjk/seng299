@@ -1,5 +1,5 @@
 div.page-header.text-center.
-  Bookables for {{bookingCtrl.facilityName}}
+  Bookables for {{bookingCtrl.facilityName}} for {{ bookingCtrl.date.format("dddd, MMMM Do YYYY") }}
 
 div.text-center
   form(ng-submit="bookingCtrl.submit()").centred-form
@@ -13,7 +13,7 @@ div.bookable-container
     ng-repeat=("timeSlot in bookable.timeSlots"),
     ng-click="bookingCtrl.toggleSelected(timeSlot)",
     ng-class="{'selected-time-slot': bookingCtrl.booking.timeSlots.indexOf(timeSlot) >= 0}").time-slot
-      {{timeSlot.hourOfDay}}
+      {{bookingCtrl.date.hour(timeSlot.hourOfDay).startOf("hour").format("h:mm a")}}
 
 div
   {{bookingCtrl.notice}}

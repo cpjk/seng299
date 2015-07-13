@@ -113,13 +113,35 @@ router.get('/', function(req, res, next){
 
 router.put('/', function(req, res, next){
   var booking = req.body.booking;
+  var timeSlots = sorted(booking.timeSlots);
+  var bookingDate = moment(booking.date).add(timeSlots[0].hourOfDay, "hours");
+  var thresholdDate = moment().add(24, "hours")
+  var currentUser = req.user;
 
-  Booking.remove({_id: booking._id}, function(err){
+  User.findOne({bookings: booking}, function(err, user){
     if(err){
       res.send(err);
     }
     else{
-      res.status(200).send();
+      if(currentUser && (currentUser.permissions == "admin" || currentUser.equals(user))){
+        Booking.remove({_id: booking._id}, function(err){
+          if(err){
+            res.send(err);
+          }
+          else{
+            if(user.permissions != "admin" && thresholdDate > bookingDate) {
+              user.noBookUntil = moment().add(48, "hours");
+              user.save(function(err){
+                console.log(err);
+              });
+            }
+            res.status(200).send();
+          }
+        });
+      }
+      else{
+        res.status(401).send();
+      }
     }
   });
 });
@@ -188,6 +210,11 @@ router.post('/', function(req, res, next){
 
     if(err){
       res.send(err);
+    }
+    else if(currentUser.noBookUntil && moment().isBefore(currentUser.noBookUntil)){
+      res.status(403).json({
+        error: "You cannot create any bookings until " +  moment(currentUser.noBookUntil).format("h:mm:ss a dddd, MMMM Do YYYY")
+      });
     }
     else if(timeSlots.length == 0){
       res.status(403).json({error: "No timeslots selected."});

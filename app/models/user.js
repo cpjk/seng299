@@ -10,6 +10,7 @@ var userSchema = mongoose.Schema({
   key: String,
   confirmed: String,
   permissions: String,
+  noBookUntil: Date,
   bookings: [{type: mongoose.Schema.Types.ObjectId, ref: 'Booking'}],
 });
 

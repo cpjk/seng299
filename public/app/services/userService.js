@@ -11,7 +11,7 @@ angular.module('userService', [])
   };
 
   factory.sendConfirmationEmail = function(email, user){
-    return $http.post('api/users/' + email, user)
+    return $http.post('/api/users/email/' + email, user)
   };
 
   factory.create = function(user){

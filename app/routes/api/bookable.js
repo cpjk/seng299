@@ -9,13 +9,20 @@ var createTimeSlots = function(){
 
   var timeSlotIds = [];
 
-  for(day = 0; day < 7; day++) {
+  for(hour = 10; hour < 20; hour++) {
+    var timeSlot = new TimeSlot({dayOfWeek: 0, hourOfDay: hour});
+    timeSlot.save(function(err){});
+    timeSlotIds.push(timeSlot._id);
+  }
+
+  for(day = 1; day < 7; day++) {
     for(hour = 8; hour < 24; hour++) {
       var timeSlot = new TimeSlot({dayOfWeek: day, hourOfDay: hour});
       timeSlot.save(function(err){});
       timeSlotIds.push(timeSlot._id);
     }
   }
+
   return timeSlotIds;
 }
 

@@ -211,6 +211,9 @@ router.post('/', function(req, res, next){
     if(err){
       res.send(err);
     }
+    else if(!currentUser){
+      res.status(403).json({error: "You must be logged in to create a booking."});
+    }
     else if(currentUser.noBookUntil && moment().isBefore(currentUser.noBookUntil)){
       res.status(403).json({
         error: "You cannot create any bookings until " +  moment(currentUser.noBookUntil).format("h:mm:ss a dddd, MMMM Do YYYY")
@@ -227,9 +230,6 @@ router.post('/', function(req, res, next){
     }
     else if (inPast(timeSlots, date)){
       res.status(403).json({error: "Cannot create bookings in the past."});
-    }
-    else if(!currentUser){
-      res.status(403).json({error: "You must be logged in to create a booking."});
     }
     else{
       Booking.find({})

@@ -10,6 +10,9 @@ div.page-header.text-center
 div.text-center.
   Click on time slots to select them for booking. Red time slots have already been booked
 
+div.text-center.notice-text
+  {{bookingCtrl.notice}}
+
 div.text-center
   form(ng-submit="bookingCtrl.submit()").centred-form
     div.form-group
@@ -25,5 +28,3 @@ div.bookable-container
     ng-class="{'selected-time-slot': bookingCtrl.booking.timeSlots.indexOf(timeSlotWithBooked.timeSlot) >= 0, 'booked-time-slot': timeSlotWithBooked.booked}").time-slot
       {{bookingCtrl.date.hour(timeSlotWithBooked.timeSlot.hourOfDay).startOf("hour").format("h:mm a")}}
 
-div
-  {{bookingCtrl.notice}}

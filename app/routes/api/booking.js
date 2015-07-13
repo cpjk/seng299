@@ -76,8 +76,13 @@ router.post('/', function(req, res, next){
       $in: timeSlots
     }
   }, function(err, timeSlots){
-
-    if (timeLimitExceeded(timeSlots)){
+    if(err){
+      res.send(err);
+    }
+    else if(timeSlots.length == 0){
+      res.status(403).json({error: "No timeslots selected."});
+    }
+    else if (timeLimitExceeded(timeSlots)){
       res.status(403).json({error: "Time limit exceeded."});
     }
     else if (multipleBookables(timeSlots)){

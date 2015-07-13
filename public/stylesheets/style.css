@@ -69,3 +69,7 @@ a {
 div.selected-time-slot {
   background-color: green;
 }
+
+div.booked-time-slot {
+  background-color: red;
+}

@@ -21,7 +21,7 @@ var timeLimitExceeded = function(timeSlots){
 }
 
 var inPast = function(timeSlots, date){
-  var dateWithHour = date.add(timeSlots[0].hourOfDay, 'hours');
+  var dateWithHour = date.clone().add(timeSlots[0].hourOfDay, 'hours');
   return dateWithHour.diff(moment()) < 0;
 }
 
@@ -89,6 +89,57 @@ router.get('/', function(req, res, next){
       res.json({
         bookings: bookings
       });
+    }
+  });
+});
+
+
+router.post('/time_slots_booked', function(req, res, next){
+  var bookables = req.body.bookables;
+
+  Booking.find({})
+  .populate("timeSlots")
+  .exec(function(err, bookings){
+    if(err){
+      res.send(err);
+    }
+    else{
+      var bookingTimeSlots = [];
+      for(i = 0; i < bookings.length; i++){
+        bookingTimeSlots = bookingTimeSlots.concat(bookings[i].timeSlots);
+      }
+
+      for(i = 0; i < bookables.length; i++){
+        var bookable = bookables[i];
+        bookable.timeSlotsWithBooked = [];
+
+        for(k = 0; k < bookable.timeSlots.length; k++){
+          var timeSlot = bookable.timeSlots[k];
+          var booked = false;
+
+          for(j = 0; j < bookingTimeSlots.length; j++){
+            if(bookingTimeSlots[j]._id.equals(timeSlot._id)){
+              booked = true;
+              break;
+            }
+          }
+          if(booked){
+            bookable.timeSlotsWithBooked.push({
+              timeSlot: timeSlot,
+              booked: true
+            });
+          }
+          else{
+            bookable.timeSlotsWithBooked.push(
+              {
+                timeSlot: timeSlot,
+                booked: false
+              }
+            );
+          }
+        }
+      }
+      res.json({bookables: bookables});
     }
   });
 });

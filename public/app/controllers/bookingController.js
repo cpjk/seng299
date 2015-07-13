@@ -33,6 +33,14 @@ bookingControllers.controller('bookingNewController', function($http, Booking, B
   })
   .error(function(data, status, headers, config){
     vm.notice += "Bookings could not be fetched."
+  })
+  .finally(function(){
+    Booking.bookedTimeSlots(vm.bookables)
+    .success(function(data, status, headers, config){
+      vm.bookables = data.bookables;
+    })
+    .error(function(data, status, headers, config){
+    });
   });
 
   vm.submit = function(){
@@ -46,13 +54,16 @@ bookingControllers.controller('bookingNewController', function($http, Booking, B
   };
 
   // Add or remove timeSlot from booking.timeSlots
-  vm.toggleSelected = function(timeSlot) {
-    var index = vm.booking.timeSlots.indexOf(timeSlot);
-    if(index >= 0){
-      vm.booking.timeSlots.splice(index, 1);
-    }
-    else{
-      vm.booking.timeSlots.push(timeSlot);
+  vm.toggleSelected = function(timeSlotWithBooked) {
+    if(!timeSlotWithBooked.booked){
+      var timeSlot = timeSlotWithBooked.timeSlot;
+      var index = vm.booking.timeSlots.indexOf(timeSlot);
+      if(index >= 0){
+        vm.booking.timeSlots.splice(index, 1);
+      }
+      else{
+        vm.booking.timeSlots.push(timeSlot);
+      }
     }
   };
 })

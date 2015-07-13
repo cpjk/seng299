@@ -35,6 +35,7 @@ userControllers.controller('userShowController', function($http, $routeParams, $
       });
     })
     .error(function(data, status, headers, config){
+      vm.notice = "Unable to delete the booking."
     });
   }
 });
@@ -142,7 +143,7 @@ function checkPass() {
   //Compare the values in the password field
   //and the confirmation field
   if(pass1.value == pass2.value){
-    //The passwords match.
+    //The passwords match. 
     //Set the color to the good color and inform
     //the user that they have entered the correct password
     pass2.classList.remove("badbgcolor");

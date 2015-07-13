@@ -19,11 +19,11 @@ User.findOne({ username: 'joetester' }, function (err, user) {
     console.log(err);
   }
   if(!user){
-    User.register(new User({ 
-      username: 'joetester', 
+    User.register(new User({
+      username: 'joetester',
       firstname: 'Joe',
       lastname: 'Smith',
-      email: 'averagejoe@averageemail.com', 
+      email: 'averagejoe@averageemail.com',
       confirmed: 'true',
       permissions: 'user'
     }), 'joetester', function(err) {
@@ -40,11 +40,11 @@ User.findOne({ username: 'admin' }, function (err, user) {
     console.log(err);
   }
   if(!user){
-    User.register(new User({ 
-      username: 'admin', 
+    User.register(new User({
+      username: 'admin',
       firstname: 'admin',
       lastname: 'admin',
-      email: 'averagejoesmembers@gmail.com', 
+      email: 'averagejoesmembers@gmail.com',
       confirmed: 'true',
       permissions: 'admin'
     }), 'admin', function(err) {
@@ -123,7 +123,7 @@ router.post('/email/:email', function(req, res){
   var mailOptions = {
     to : email,
     subject : "Please confirm your Email account",
-    html : "Hello "+req.body.firstname+",<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>" 
+    html : "Hello "+req.body.firstname+",<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
   }
   transporter.sendMail(mailOptions, function(error){
     if(error){
@@ -191,6 +191,25 @@ router.post('/:username', function(req, res, next){
         }
         if(req.body.email){
           user.email = req.body.email;
+        }
+        if(req.body.newpass){
+          if(req.body.newpass == req.body.confpass){
+            user.setPassword(req.body.newpass, function(error){
+              if(!error){
+                user.save(function(error){
+                  if(error){
+                    res.send(err)
+                  }
+                });
+              }
+              else{
+                res.send(err)
+              }
+            });
+          }
+          else{
+            res.send(err)
+          }
         }
         user.save(function(err){
           if(err){

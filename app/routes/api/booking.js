@@ -44,7 +44,7 @@ var userHasCurrentBookingsForFacility = function(user, date, bookable){
   for(i = 0; i < bookings.length; i++){
     var booking = bookings[i];
 
-    if(moment(booking.date).isSame(date) && bookable._id.equals(booking.bookable)){
+    if(moment(booking.date).isSame(date) && bookable.bookableType.equals(booking.bookable.bookableType)){
       return true;
     }
   }
@@ -90,7 +90,9 @@ router.post('/', function(req, res, next){
       res.status(403).json({error: "You must be logged in to create a booking."});
     }
     else{
-      Bookable.findOne({ timeSlots: timeSlots[0] }, function(err, bookable){
+      Bookable.findOne({ timeSlots: timeSlots[0] })
+      .populate('bookableType')
+      .exec(function(err, bookable){
         if(err){
           res.send(err);
         }
@@ -102,33 +104,50 @@ router.post('/', function(req, res, next){
               res.send(err);
             }
             else{
-              if(userHasCurrentBookingsForFacility(user, date, bookable)){
-                res.status(403).json({error: "You can only make one booking per facility per day."});
-              }
-              else{
-                var booking = new Booking({
-                  date: date,
-                  timeSlots: timeSlots,
-                  bookable: bookable
-                });
+              var opts = {
+                path: 'bookings.bookable',
+                model: 'Bookable'
+              };
+              User.populate(user, opts, function(err, user){
+                if(err){
+                  res.send(err);
+                }
+                else{
+                  var opts = {
+                    path: 'bookings.bookable.bookableType',
+                    model: 'BookableType'
+                  };
+                  User.populate(user, opts, function(err, user){
+                    if(userHasCurrentBookingsForFacility(user, date, bookable)){
+                      res.status(403).json({error: "You can only make one booking per facility per day."});
+                    }
+                    else{
+                      var booking = new Booking({
+                        date: date,
+                        timeSlots: timeSlots,
+                        bookable: bookable
+                      });
 
-                booking.save(function(err){
-                  if(err) {
-                    res.send(err);
-                  }
-                  else{
-                    user.bookings.push(booking);
-                    user.save(function(err){
-                      if(err){
-                        res.send(err);
-                      }
-                      else{
-                        res.status(200).json({success: "Success"});
-                      }
-                    });
-                  }
-                });
-              }
+                      booking.save(function(err){
+                        if(err) {
+                          res.send(err);
+                        }
+                        else{
+                          user.bookings.push(booking);
+                          user.save(function(err){
+                            if(err){
+                              res.send(err);
+                            }
+                            else{
+                              res.status(200).json({success: "Success"});
+                            }
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+              });
             }
           });
         }

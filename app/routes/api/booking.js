@@ -8,16 +8,21 @@ var moment = require("moment");
 
 var MAX_BOOKING_HOURS = 2;
 
-var timeLimitExceeded = function(timeSlots){
-  // sort by hourOfDay, ascending
+// sort by hourOfDay, ascending
+var sorted = function(timeSlots) {
   timeSlots.sort(function(a,b){
     return a.hourOfDay - b.hourOfDay;
   });
+  return timeSlots;
+}
+
+var timeLimitExceeded = function(timeSlots){
   return timeSlots[timeSlots.length-1].hourOfDay - timeSlots[0].hourOfDay > MAX_BOOKING_HOURS - 1;
 }
 
-var inPast = function(date){
-  return date.diff(moment()) < 0;
+var inPast = function(timeSlots, date){
+  var dateWithHour = date.add(timeSlots[0].hourOfDay, 'hours');
+  return dateWithHour.diff(moment()) < 0;
 }
 
 // check if multiple bookables are being booked at once
@@ -98,6 +103,8 @@ router.post('/', function(req, res, next){
       $in: timeSlots
     }
   }, function(err, timeSlots){
+    timeSlots = sorted(timeSlots);
+
     if(err){
       res.send(err);
     }
@@ -110,7 +117,7 @@ router.post('/', function(req, res, next){
     else if (multipleBookables(timeSlots)){
       res.status(403).json({error: "Cannot book multiple bookables in a single booking."});
     }
-    else if (inPast(date)){
+    else if (inPast(timeSlots, date)){
       res.status(403).json({error: "Cannot create bookings in the past."});
     }
     else if(!currentUser){

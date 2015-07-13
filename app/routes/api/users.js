@@ -73,12 +73,47 @@ router.get('/', function(req, res, next){
 router.get('/:username', function(req, res, next){
   var username = req.params.username;
 
-  User.findOne({username: username}, function(err, user){
+  User.findOne({username: username})
+  .populate('bookings')
+  .exec(function(err, user){
     if(err){
       res.send(err);
     }
     else{
-      res.json({user: user});
+      var opts = {
+        path: 'bookings.bookable',
+        model: 'Bookable'
+      };
+      User.populate(user, opts, function(err, user){
+        if(err){
+          res.send(err);
+        }
+        else{
+          var opts = {
+            path: 'bookings.timeSlots',
+            model: 'TimeSlot'
+          };
+          User.populate(user, opts, function(err, user){
+            if(err){
+              res.send(err);
+            }
+            else{
+              var opts = {
+                path: 'bookings.bookable.bookableType',
+                model: 'BookableType'
+              };
+              User.populate(user, opts, function(err, user){
+                if(err){
+                  res.send(err);
+                }
+                else{
+                  res.json({user: user});
+                }
+              });
+            }
+          });
+        }
+      });
     }
   });
 });
@@ -111,7 +146,7 @@ router.post('/', function(req, res, next){
             res.status(200).json({success: true, key: hash})
           });
         }
-    });
+      });
   }
 });
 // send confirmation email to user with key

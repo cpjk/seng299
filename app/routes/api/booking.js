@@ -93,6 +93,18 @@ router.get('/', function(req, res, next){
   });
 });
 
+router.put('/', function(req, res, next){
+  var booking = req.body.booking;
+
+  Booking.remove({_id: booking._id}, function(err){
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.status(200).send();
+    }
+  });
+});
 
 router.post('/time_slots_booked', function(req, res, next){
   var bookables = req.body.bookables;

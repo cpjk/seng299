@@ -9,7 +9,7 @@ userControllers.controller('userIndexController', function($http, User) {
   });
 });
 
-userControllers.controller('userShowController', function($http, $routeParams, User) {
+userControllers.controller('userShowController', function($http, $routeParams, User, Booking) {
   var vm = this;
   var username = $routeParams.username;
   vm.userEditUrl = "/users/" + username + "/edit"
@@ -17,7 +17,23 @@ userControllers.controller('userShowController', function($http, $routeParams, U
   User.get(username)
   .success(function(data, status, headers, config){
     vm.user = data.user;
-  })
+  });
+
+  vm.formatDate = function(date){
+   return moment(date).format("dddd, MMMM Do YYYY");
+  };
+
+  vm.deleteBooking = function(booking){
+    Booking.delete(booking)
+    .success(function(data, status, headers, config){
+      User.get(username)
+      .success(function(data, status, headers, config){
+        vm.user = data.user;
+      });
+    })
+    .error(function(data, status, headers, config){
+    });
+  }
 });
 
 userControllers.controller('userNewController', function($http, $location, User) {

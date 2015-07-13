@@ -14,5 +14,9 @@ angular.module('bookingService', [])
     return $http.post('/api/bookings', booking);
   };
 
+  factory.delete = function(booking){
+    return $http.put('/api/bookings', {booking: booking});
+  };
+
   return factory;
 });

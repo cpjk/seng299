@@ -42,16 +42,14 @@ userControllers.controller('userNewController', function($http, $location, User)
       vm.success = "Your passwords do not match!";
     }
     User.create(vm.user)
-    .then(function(data){
-      if(data.data.success){
-        vm.user.key = data.data.key;
-        User.sendConfirmationEmail(vm.user.email, vm.user)
-        vm.success = "success!";
-        $location.path("/confirm");
-      }
-      else{
-        vm.success = data.data.message;
-      }
+    .success(function(data, status, headers, config){
+      vm.user.key = data.key;
+      User.sendConfirmationEmail(vm.user.email, vm.user);
+      vm.success = "success!";
+      $location.path("/confirm");
+    })
+    .error(function(data, status, headers, config){
+      vm.success = data.message;
     });
   };
 });

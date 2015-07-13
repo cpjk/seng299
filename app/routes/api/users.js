@@ -86,7 +86,7 @@ router.get('/:username', function(req, res, next){
 // create new user and authenticate with passport
 router.post('/', function(req, res, next){
   if(req.body.password != req.body.password2){
-    res.json(err);
+    res.status(403).send(err);
   }
   else{
     var hash = crypto.randomBytes(20).toString('hex');
@@ -99,7 +99,12 @@ router.post('/', function(req, res, next){
       confirmed: "false",
       permissions: "user"}), req.body.password, function(err, user){
         if(err){
-          res.json(err);
+          if(err.code == 11000){
+            res.status(403).json({message: "That email is already in use."});
+          }
+          else{
+            res.status(403).send(err);
+          }
         }
         else{
           passport.authenticate('local')(req, res, function(){

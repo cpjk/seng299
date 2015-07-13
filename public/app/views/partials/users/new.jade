@@ -7,7 +7,10 @@ div.text-center
       div.form-group
         input(type="text" required placeholder="Username" ng-model="userCtrl.user.username").form-control
       div.form-group
-        input(type="password" required placeholder="Password" ng-model="userCtrl.user.password").form-control
+        input#pass1(type="password" name="pass1" required placeholder="Password" ng-model="userCtrl.user.password").form-control
+      div.form-group
+        input#pass2(type="password" name="pass2" required placeholder="Confirm Password" onkeyup='checkPass(); return false;' ng-model="userCtrl.user.password2").form-control
+        span#confirmMessage.confirmMessage
       div.form-group
         input(type="text" required placeholder="First name" ng-model="userCtrl.user.firstname").form-control
       div.form-group

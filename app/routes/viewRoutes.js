@@ -18,4 +18,8 @@ router.get("/session/:partial_name", function(req, res, next) {
   res.render('partials/session/' + req.params.partial_name);
 });
 
+router.get("/bookings/:partial_name", function(req, res, next) {
+  res.render('partials/bookings/' + req.params.partial_name);
+});
+
 module.exports = router;

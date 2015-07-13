@@ -64,8 +64,13 @@ a {
   margin: 10px 0 10px 0;
   width: 100px;
   height: 40px;
+  border-radius: 4px;
 }
 
 div.selected-time-slot {
   background-color: green;
+}
+
+div.booked-time-slot {
+  background-color: red;
 }

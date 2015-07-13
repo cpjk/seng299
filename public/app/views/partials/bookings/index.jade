@@ -1,0 +1,13 @@
+div.page-header.text-center
+  h3 Bookings
+
+div.text-center
+  ul(ng-repeat="booking in bookingCtrl.bookings").list-group
+    li.list-group-item
+      {{booking.bookable.bookableType.name}}:
+      {{booking.bookable.name}} at
+      {{booking.timeSlots[0].hourOfDay}} on
+      {{bookingCtrl.formatDate(booking.date)}}
+
+      button(ng-click="bookingCtrl.deleteBooking(booking)").btn.btn-default.marg-button-lr.
+        Delete

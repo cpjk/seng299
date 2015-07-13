@@ -35,6 +35,7 @@ userControllers.controller('userShowController', function($http, $routeParams, $
       });
     })
     .error(function(data, status, headers, config){
+      vm.notice = "Unable to delete the booking."
     });
   }
 });

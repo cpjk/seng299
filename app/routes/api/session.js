@@ -16,10 +16,10 @@ var transporter = nodemailer.createTransport({
 // Creates a new session for the user if successful
 router.post('/login', passport.authenticate('local'), function(req, res){
   if(req.user.confirmed == "false"){
-  	res.status(403).json({currentUser: req.user});
+    res.status(403).json({currentUser: req.user});
   }
   else {
-  	res.json({currentUser: req.user});
+    res.json({currentUser: req.user});
   }
 });
 

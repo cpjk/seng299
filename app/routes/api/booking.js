@@ -3,6 +3,7 @@ var router = express.Router();
 var Booking = require('../../../app/models/booking')
 var User = require('../../../app/models/user')
 var TimeSlot = require('../../../app/models/timeSlot')
+var Bookable = require('../../../app/models/bookable')
 var moment = require("moment");
 
 var MAX_BOOKING_HOURS = 2;
@@ -13,6 +14,41 @@ var timeLimitExceeded = function(timeSlots){
     return a.hourOfDay - b.hourOfDay;
   });
   return timeSlots[timeSlots.length-1].hourOfDay - timeSlots[0].hourOfDay > MAX_BOOKING_HOURS - 1;
+}
+
+var inPast = function(date){
+  return date.diff(moment()) < 0;
+}
+
+// check if multiple bookables are being booked at once
+var multipleBookables = function(timeSlots){
+  var currentBookableId = null;
+  var multiple = false;
+
+  for(i = 0; i < timeSlots.length; i++){
+    var bookableId = timeSlots[i].bookable;
+    if(currentBookableId && currentBookableId.id != bookableId.id){
+      return true;
+    }
+    else{
+      currentBookableId = bookableId;
+    }
+  }
+
+  return false;
+}
+
+var userHasCurrentBookingsForFacility = function(user, date, bookable){
+  var bookings =  user.bookings;
+
+  for(i = 0; i < bookings.length; i++){
+    var booking = bookings[i];
+
+    if(moment(booking.date).isSame(date) && bookable.bookableType.equals(booking.bookable.bookableType)){
+      return true;
+    }
+  }
+  return false;
 }
 
 router.get('/', function(req, res, next){
@@ -33,6 +69,7 @@ router.get('/', function(req, res, next){
 router.post('/', function(req, res, next){
   var timeSlots = req.body.timeSlots;
   var date = moment(req.body.date, "YYYY-M-D");
+  var currentUser = req.user;
 
   TimeSlot.find({
     '_id': {
@@ -43,18 +80,76 @@ router.post('/', function(req, res, next){
     if (timeLimitExceeded(timeSlots)){
       res.status(403).json({error: "Time limit exceeded."});
     }
+    else if (multipleBookables(timeSlots)){
+      res.status(403).json({error: "Cannot book multiple bookables in a single booking."});
+    }
+    else if (inPast(date)){
+      res.status(403).json({error: "Cannot create bookings in the past."});
+    }
+    else if(!currentUser){
+      res.status(403).json({error: "You must be logged in to create a booking."});
+    }
     else{
-      var booking = new Booking({
-        date: date,
-        timeSlots: timeSlots
-      });
-
-      booking.save(function(err){
-        if(err) {
+      Bookable.findOne({ timeSlots: timeSlots[0] })
+      .populate('bookableType')
+      .exec(function(err, bookable){
+        if(err){
           res.send(err);
         }
         else{
-          res.status(200).json({success: "Success"});
+          User.findOne({username: currentUser.username})
+          .populate('bookings')
+          .exec(function(err, user){
+            if(err){
+              res.send(err);
+            }
+            else{
+              var opts = {
+                path: 'bookings.bookable',
+                model: 'Bookable'
+              };
+              User.populate(user, opts, function(err, user){
+                if(err){
+                  res.send(err);
+                }
+                else{
+                  var opts = {
+                    path: 'bookings.bookable.bookableType',
+                    model: 'BookableType'
+                  };
+                  User.populate(user, opts, function(err, user){
+                    if(userHasCurrentBookingsForFacility(user, date, bookable)){
+                      res.status(403).json({error: "You can only make one booking per facility per day."});
+                    }
+                    else{
+                      var booking = new Booking({
+                        date: date,
+                        timeSlots: timeSlots,
+                        bookable: bookable
+                      });
+
+                      booking.save(function(err){
+                        if(err) {
+                          res.send(err);
+                        }
+                        else{
+                          user.bookings.push(booking);
+                          user.save(function(err){
+                            if(err){
+                              res.send(err);
+                            }
+                            else{
+                              res.status(200).json({success: "Success"});
+                            }
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
       });
     }

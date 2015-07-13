@@ -79,6 +79,20 @@ router.post('/', function(req, res, next){
           res.send(err);
         }
         else{
+          for(i = 0; i < bookable.timeSlots.length; i++){
+            var timeSlotId = bookable.timeSlots[i];
+            TimeSlot.findOne({_id: timeSlotId}, function(err, timeSlot){
+              if(err){
+                console.log(err);
+              }
+              timeSlot.bookable = bookable;
+              timeSlot.save(function(err){
+                if(err) {
+                  console.log(err);
+                }
+              });
+            });
+          }
           res.status(200).send();
         }
       });

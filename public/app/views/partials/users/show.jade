@@ -22,3 +22,17 @@ div.text-center
       Edit
     button(ng-click="userDeleteCtrl.delete(userCtrl.user)").btn.btn-default.marg-button-lr.
       Delete
+
+div.text-center
+ h3 My bookings
+ ul(ng-repeat="booking in userCtrl.user.bookings").list-group
+   li.list-group-item
+     {{booking.bookable.bookableType.name}}:
+     {{booking.bookable.name}}
+     at
+     {{booking.timeSlots[0].hourOfDay}}
+     on
+     {{userCtrl.formatDate(booking.date)}}
+
+     button(ng-click="userCtrl.deleteBooking(booking)").btn.btn-default.marg-button-lr.
+       Delete

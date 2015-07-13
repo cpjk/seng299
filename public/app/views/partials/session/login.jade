@@ -8,9 +8,9 @@ div.text-center
       input(type="text" required placeholder="Username" ng-model="sessionCtrl.username").form-control
     div.form-group
       input(type="password" required placeholder="Password" ng-model="sessionCtrl.password").form-control
-    button(type="submit").btn.btn-default.
+    button(type="submit").btn.btn-default.marg-button-lr.
       Login
-    a(href="/forgot/") Forgot?
+    a(href="/forgot/") Forgot your Password?
 
   div(ng-model="sessionCtrl.message")
     a(href="/api/verify/resend/{{sessionCtrl.user.key}}", target='_blank')

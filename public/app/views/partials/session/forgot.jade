@@ -1,0 +1,12 @@
+div.page-header.text-center
+  h3 Forgot Password
+
+div.text-center
+  form(ng-submit="sessionCtrl.forgot()").centred-form
+    div.form-group
+      input(type="email" required placeholder="Email" ng-model="sessionCtrl.email").form-control
+    button(type="submit").btn.btn-default.
+      Reset Password
+
+  div(ng-model="sessionCtrl.message")
+    {{sessionCtrl.message}}

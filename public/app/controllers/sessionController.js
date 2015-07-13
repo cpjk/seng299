@@ -16,7 +16,11 @@ sessionControllers.controller('sessionLoginController', function($http, $locatio
       $location.path("/");
     })
     .error(function(data, status, headers, config){
-      if(status == 401){
+      if(status == 403){
+        data.currentUser.errormessage = "Please validate your account. Click this link to resend the validation email.";
+        vm.user = data.currentUser;
+      }
+      else if(status == 401){
         vm.message = "The username and password did not match. Please try again.";
       }
       else{
@@ -40,3 +44,21 @@ sessionControllers.controller('sessionLogoutController', function($http, Session
     });
   };
 });
+
+sessionControllers.controller('sessionForgotController', function($http, Session, CurrentUser) {
+  var vm = this;
+  vm.message = "";
+  vm.email = "";
+
+  vm.forgot = function() {
+    Session.forgot({email: vm.email})
+    .success(function(data, status, headers, config){
+      console.log("sent email");
+      vm.message = "Sent password reset link";
+    })
+    .error(function(data, status, headers, config){
+      vm.message = "Sorry, we couldn't send a reset request: " + status;
+    });
+  };
+});
+

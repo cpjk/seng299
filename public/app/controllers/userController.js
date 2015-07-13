@@ -20,9 +20,10 @@ userControllers.controller('userShowController', function($http, $routeParams, U
   })
 });
 
-userControllers.controller('userNewController', function($http, $location ,User) {
+userControllers.controller('userNewController', function($http, $location, User) {
   var vm = this;
-  vm.success = "";
+
+  vm.success = ""; 
 
   vm.user = {
     username: "",
@@ -30,7 +31,10 @@ userControllers.controller('userNewController', function($http, $location ,User)
     password2: "",
     firstname: "",
     lastname: "",
-    email: ""
+    email: "",
+    key: "",
+    confirmed: "false",
+    permissions: "user"
   };
 
   vm.submit = function(){
@@ -40,8 +44,10 @@ userControllers.controller('userNewController', function($http, $location ,User)
     User.create(vm.user)
     .then(function(data){
       if(data.data.success){
+        vm.user.key = data.data.key;
+        User.sendConfirmationEmail(vm.user.email, vm.user)
         vm.success = "success!";
-        $location.path("/welcome");
+        $location.path("/confirm");
       }
       else{
         vm.success = data.data.message;
@@ -65,7 +71,10 @@ userControllers.controller('userEditController', function($http, User, $routePar
   });
 
   vm.updatedUser = {
-    username: ""
+    username: "",
+    firstname: "",
+    lastname: "",
+    email: ""
   };
 
   vm.submit = function(){

@@ -39,3 +39,33 @@ a {
 .goodcolor{
   color: #66cc66;
 }
+
+.prof-table {
+  margin: 10px auto;
+}
+
+.flat-para {
+  display: inline;
+}
+
+.marg-button-lr {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.bookable {
+  float: left;
+  margin: 0 20px 0 20px;
+}
+
+.time-slot {
+  background-color: gray;
+  padding: 10px;
+  margin: 10px 0 10px 0;
+  width: 100px;
+  height: 40px;
+}
+
+div.selected-time-slot {
+  background-color: green;
+}

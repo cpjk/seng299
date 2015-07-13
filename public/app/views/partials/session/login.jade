@@ -10,6 +10,8 @@ div.text-center
       input(type="password" required placeholder="Password" ng-model="sessionCtrl.password").form-control
     button(type="submit").btn.btn-default.
       Login
+    a(href="/forgot/") Forgot?
 
   div(ng-model="sessionCtrl.message")
-    {{sessionCtrl.message}}
+    a(href="/api/verify/resend/{{sessionCtrl.user.key}}", target='_blank')
+      {{sessionCtrl.user.errormessage}}

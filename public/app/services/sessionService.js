@@ -10,6 +10,11 @@ angular.module('sessionService', [])
     return $http.post('/api/session/logout');
   };
 
+  factory.forgot = function(email){
+    console.log(email);
+    return $http.post('/api/session/forgot', email);
+  };
+
   return factory;
 })
 

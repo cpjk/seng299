@@ -1,10 +1,17 @@
 div.page-header.text-center
-  h3 Editing {{userCtrl.originalUser.username}}
+  h3 Editing User {{userCtrl.originalUser.username}}
+  p.flat-para Update your user information below, fields left blank will not be changed
 
 div.text-center
   form(ng-submit="userCtrl.submit()").centred-form
     div.form-group
-      input(type="text" required placeholder="Username" ng-model="userCtrl.updatedUser.username").form-control
+      input(type="text" placeholder="{{userCtrl.originalUser.username}}" ng-model="userCtrl.updatedUser.username" maxlength="30").form-control
+    div.form-group
+      input(type="text" placeholder="{{userCtrl.originalUser.firstname}}" ng-model="userCtrl.updatedUser.firstname" maxlength="30").form-control
+    div.form-group
+      input(type="text" placeholder="{{userCtrl.originalUser.lastname}}" ng-model="userCtrl.updatedUser.lastname" maxlength="30").form-control
+    div.form-group
+      input(type="email" placeholder="{{userCtrl.originalUser.email}}" ng-model="userCtrl.updatedUser.email" maxlength="30").form-control
     button(type="submit").btn.btn-default.submit-button.
       Submit
 

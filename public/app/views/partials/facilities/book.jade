@@ -1,0 +1,19 @@
+div.page-header.text-center.
+  Bookables for {{bookingCtrl.facilityName}}
+
+div.text-center
+  form(ng-submit="bookingCtrl.submit()").centred-form
+    div.form-group
+    button(type="submit").btn.btn-default.submit-button.
+      Create booking!
+
+div.bookable-container
+  div(ng-repeat="bookable in bookingCtrl.bookables").bookable.text-center
+    div(
+    ng-repeat=("timeSlot in bookable.timeSlots"),
+    ng-click="bookingCtrl.toggleSelected(timeSlot)",
+    ng-class="{'selected-time-slot': bookingCtrl.booking.timeSlots.indexOf(timeSlot) >= 0}").time-slot
+      {{timeSlot.hourOfDay}}
+
+div
+  {{bookingCtrl.notice}}

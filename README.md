@@ -1,9 +1,6 @@
 # average-joes
 
 ## Installation
-* Install MongoDB if you don't already have it.
-* Create a database called average-joes
-* Then in your shell:
 ```bash
 npm install
 npm start

@@ -53,7 +53,7 @@ html
               li(ng-if="main.currentUser.permissions == 'admin'")
                 a(href='/bookings') Bookings
             ul.nav.navbar-nav
-              li
+              li(ng-if="!main.currentUser")
                 a(href='/new_user') Sign up
 
             ul.nav.navbar-nav.navbar-right

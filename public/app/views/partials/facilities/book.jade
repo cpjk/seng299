@@ -7,6 +7,8 @@ div.page-header.text-center
 
   a(ng-href="{{bookingCtrl.nextDateUrl}}" role="button").btn.btn-default.marg-button-lr.
     Next day
+div.text-center.
+  Click on time slots to select them for booking. Red time slots have already been booked
 
 div.text-center
   form(ng-submit="bookingCtrl.submit()").centred-form
@@ -17,10 +19,10 @@ div.text-center
 div.bookable-container
   div(ng-repeat="bookable in bookingCtrl.bookables").bookable.text-center
     div(
-    ng-repeat=("timeSlot in bookable.timeSlots"),
-    ng-click="bookingCtrl.toggleSelected(timeSlot)",
-    ng-class="{'selected-time-slot': bookingCtrl.booking.timeSlots.indexOf(timeSlot) >= 0}").time-slot
-      {{bookingCtrl.date.hour(timeSlot.hourOfDay).startOf("hour").format("h:mm a")}}
+    ng-repeat=("timeSlotWithBooked in bookable.timeSlotsWithBooked"),
+    ng-click="bookingCtrl.toggleSelected(timeSlotWithBooked)",
+    ng-class="{'selected-time-slot': bookingCtrl.booking.timeSlots.indexOf(timeSlotWithBooked.timeSlot) >= 0, 'booked-time-slot': timeSlotWithBooked.booked}").time-slot
+      {{bookingCtrl.date.hour(timeSlotWithBooked.timeSlot.hourOfDay).startOf("hour").format("h:mm a")}}
 
 div
   {{bookingCtrl.notice}}

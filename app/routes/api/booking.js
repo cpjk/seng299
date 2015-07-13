@@ -79,18 +79,36 @@ var alreadyBooked = function(bookings, date, timeSlots){
 }
 
 router.get('/', function(req, res, next){
-  Booking.find({})
-  .populate("timeSlots")
-  .exec(function(err, bookings){
-    if(err){
-      res.send(err);
-    }
-    else{
-      res.json({
-        bookings: bookings
-      });
-    }
-  });
+
+  if(req.user && req.user.permissions == "admin"){
+    Booking.find({})
+    .populate('bookable')
+    .populate('timeSlots')
+    .exec(function(err, bookings){
+      if(err){
+        res.send(err);
+      }
+      else{
+        var opts = {
+          path: 'bookable.bookableType',
+          model: 'BookableType'
+        };
+        Booking.populate(bookings, opts, function(err, bookings){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.json({
+              bookings: bookings
+            });
+          }
+        });
+      }
+    });
+  }
+  else{
+    res.status(401).send();
+  }
 });
 
 router.put('/', function(req, res, next){

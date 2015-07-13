@@ -66,4 +66,35 @@ bookingControllers.controller('bookingNewController', function($http, Booking, B
       }
     }
   };
+});
+
+bookingControllers.controller('bookingIndexController', function($http, $location, Booking) {
+  var vm = this;
+
+  Booking.all()
+  .success(function(data, status, headers, config){
+    vm.bookings = data.bookings;
+  })
+  .error(function(data, status, headers, config){
+    $location.path("/");
+  });
+
+  vm.deleteBooking = function(booking){
+    Booking.delete(booking)
+    .success(function(data, status, headers, config){
+      Booking.all()
+      .success(function(data, status, headers, config){
+        vm.bookings = data.bookings;
+      })
+      .error(function(data, status, headers, config){
+        $location.path("/");
+      });
+    })
+    .error(function(data, status, headers, config){
+    });
+  }
+
+  vm.formatDate = function(date){
+   return moment(date).format("dddd, MMMM Do YYYY");
+  };
 })

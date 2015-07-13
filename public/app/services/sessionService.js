@@ -11,7 +11,6 @@ angular.module('sessionService', [])
   };
 
   factory.forgot = function(email){
-    console.log(email);
     return $http.post('/api/session/forgot', email);
   };
 
@@ -27,12 +26,10 @@ angular.module('sessionService', [])
     $http.get('/api/session')
     .success(function(data, status, headers, config){
       console.log("session fetch success:");
-      console.log(data.currentUser);
       factory.user = data.currentUser
     })
     .error(function(data, status, headers, config){
-      console.log("session fetch error:");
-      console.log(data);
+      console.log("Session could not be fetched.");
       factory.user = '';
     });
     return factory.user;

@@ -18,6 +18,7 @@ div.text-center
 
 div.bookable-container
   div(ng-repeat="bookable in bookingCtrl.bookables").bookable.text-center
+    {{bookable.name}}
     div(
     ng-repeat=("timeSlotWithBooked in bookable.timeSlotsWithBooked"),
     ng-click="bookingCtrl.toggleSelected(timeSlotWithBooked)",

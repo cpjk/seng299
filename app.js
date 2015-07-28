@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
 var LocalStrategy = require('passport-local').Strategy;
+var sleep = require('sleep');
 
 var app = express();
 
@@ -47,6 +48,10 @@ app.use('/', indexRoute);
 app.use('/partials', viewRoutes);
 app.use('/api/session', sessionApiRoutes);
 app.use('/api/users', usersApiRoutes);
+app.use(function (req, res, next) {
+  sleep.sleep(2)
+  next();
+});
 app.use('/api/bookables', bookableApiRoutes);
 app.use('/api/bookabletypes', bookableTypeApiRoutes);
 app.use('/api/reset', usersPasswordResetRoutes);
